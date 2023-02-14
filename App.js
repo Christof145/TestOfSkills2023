@@ -1,18 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import { StyleSheet, Text, View, Image} from 'react-native';
+import React from "react";
+import Button from "./components/Button";
+
+const placeHolderImage = require('./assets/cat.png')
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={{color: '#3ca832',}}>Hello</Text>
-      <StatusBar style="auto" />
-      <View style={styles.buttonContainer}>
-        <StatusBar style="auto" />
-        <Pressable style={styles.button} onPress={() => alert('You pressed a button.')}>
-          <Text style={{color: '#3ca832',}}>Get a cat!</Text>
-        </Pressable>
+      <View style={styles.placeHolderImage} >
+        <Image source={placeHolderImage} style={styles.image}/>
       </View>
+      <View>
+        <Button label='Get a cat!'/>
+      </View>
+      <StatusBar style="auto"/>
     </View>
   );
 }
@@ -22,24 +24,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#25292e',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 100
   },
-  buttonContainer: {
-    borderRadius: 10,
-    height: 20,
-    width: 50,
-    marginHorizontal: 30,
-    backgroundColor: '#25292e',
+  imageContainer: {
+    flex: 1,
+    paddingTop: 58,
+  },
+  image: {
+    width: 320,
+    height: 440,
+    borderRadius: 18,
+  },
+  footerContainer: {
+    flex: 1 / 3,
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  button: {
-    borderRadius: 10,
-    width: '100%',
-    height: '100%',
-    alignItems: 'centre',
-    justifyContent: 'centre',
-    flexDirection: 'row',
-  }
-
 });
