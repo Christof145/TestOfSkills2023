@@ -6,6 +6,7 @@ import React, {useState} from "react";
 import Button from "./components/Button";
 const placeHolderImage = require('./assets/cat.png')
 const queryClient = new QueryClient();
+let catImageURl;
 
 export default function App() {
   return (
@@ -17,15 +18,16 @@ export default function App() {
 
 function Main() {
     const [fetchPosts, setFetchPosts] = useState();
-    console.log("run")
     const { isLoading, error, data } = useQuery(
         ["posts"],
         () =>
             axios.get("https://api.thecatapi.com/v1/images/search")
                 .then(res =>{
-                    const items = res.data;
-                    console.log(items)
                     res.data
+                    catImageURl = res.data[0].url
+                    console.log(res.data[0].url)
+                    console.log(res.data[0])
+
                 }),
         {
             enabled: fetchPosts
@@ -38,7 +40,7 @@ function Main() {
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <View style={styles.placeHolderImage}>
-                    <Image source={placeHolderImage} style={styles.image}/>
+                    <Image source={{url:catImageURl}} style={styles.image}/>
                 </View>
             </View>
             <View style={styles.footerContainer}>
