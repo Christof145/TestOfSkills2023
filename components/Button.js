@@ -1,15 +1,13 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import React from "react";
 
-export default function Button({ label }) {
-    return (
-        <View style={styles.buttonContainer}>
-            <Pressable style={styles.button} >
-                <Text style={styles.buttonLabel}>{label}</Text>
-            </Pressable>
-        </View>
-    );
-}
+export const Button = ({ onPress, label }) => (
+    <View style={styles.buttonContainer}>
+        <Pressable style={styles.button} onPress={onPress}>
+            <Text style={styles.buttonLabel}>{label}</Text>
+        </Pressable>
+    </View>
+);
 
 const styles = StyleSheet.create({
     buttonContainer: {
