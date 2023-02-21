@@ -3,12 +3,64 @@ import {Image, StyleSheet, View} from 'react-native';
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import React, {Suspense, useState} from 'react'
 import axios from 'axios';
-import {Button} from "./components/Button";
 import ImageViewer from "./components/ImageViewer";
+import { AppRegistry } from 'react-native';
+import {Icon, ThemeProvider, Button} from "react-native-magnus";
 
 const queryClient = new QueryClient();
 const placeHolderImage = require('./assets/cat.png')
 let catImageURl;
+
+// this is our custom theme
+const theme = {
+    colors: {
+        violet100: "#8A2BE2",
+    },
+    fontSize: {
+        bigText100: 32,
+    },
+    buttonContainer: {
+        height: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    button: {
+        borderRadius: 10,
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    buttonIcon: {
+        paddingRight: 8,
+    },
+    buttonLabel: {
+        color: '#000000',
+        fontSize: 16,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#25292e',
+        alignItems: 'center',
+    },
+    imageContainer: {
+        flex: 1,
+        width: 310,
+        paddingTop: 100,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    image: {
+        borderRadius: 10,
+        resizeMode: 'stretch',
+        alignItems: 'center'
+    },
+    footerContainer: {
+        flex: 1/8,
+        alignItems: 'center',
+    },
+};
 
 export default function App() {
   return (
@@ -17,6 +69,7 @@ export default function App() {
       </QueryClientProvider>
   );
 }
+AppRegistry.registerComponent('app', () => App);
 
 function MyImageComponent() {
     console.log("Make Image Component")
@@ -40,61 +93,18 @@ function Main() {
         getData
     );
     return (
-        <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <MyImageComponent/>
-            </View>
-            <View style={styles.footerContainer}>
-                <View>
-                    <Button label='Get a cat!' onPress={getData}/>
+        <ThemeProvider theme={theme}>
+            <View style={theme.container}>
+                <View style={theme.imageContainer}>
+                    <MyImageComponent/>
                 </View>
+                <View style={theme.footerContainer}>
+                    <View style={theme.buttonContainer}>
+                        <Button block bg={theme.colors.violet100} suffix={<Icon name="search" position="absolute" left={'25%'} color="white" fontFamily="Feather" />} label={"Find a random cat"} onPress={getData} mt="lg">Get a random cat</Button>
+                    </View>
+                </View>
+                <StatusBar style="auto"/>
             </View>
-            <StatusBar style="auto"/>
-        </View>
+        </ThemeProvider>
     );
-            // console.log(status, isStale, isFetching, error, data);
-            // console.log("got here 2")
-            // const [fetchPosts, setFetchPosts] = useState();
-            // console.log("got here 3")
-            // useQuery(["posts"], () => getData());
-    // const {isLoading, error, data} = useQuery(
-    //     ["posts"],
-    //     () =>
-    //         axios.get("https://api.thecatapi.com/v1/images/search")
-    //             .then(res => {
-    //                 console.log("got here 4")
-    //                 res.data
-    //                 let catImageURl = res.data[0].url
-    //                 // console.log(res.data[0].url)
-    //                 console.log(catImageURl)
-    //
-    //             }),
-    //     {
-    //         enabled: fetchPosts
-    //     }
-    // );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-  },
-
-  imageContainer: {
-    flex: 1,
-    paddingTop: 100,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  image: {
-    borderRadius: 18,
-    resizeMode: 'stretch',
-    alignItems: 'center'
-  },
-  footerContainer: {
-    flex: 1 / 8,
-    alignItems: 'center',
-  },
-});
