@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
-import {Image, StyleSheet, TextInput, TouchableOpacity, View, Text} from 'react-native';
+import {Image, StyleSheet, TextInput, TouchableOpacity, View, Text, Alert} from 'react-native';
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import React, {Suspense, useState} from 'react'
 import axios from 'axios';
@@ -225,60 +225,17 @@ function Register({navigation}) {
             setConfirmSecureTextEntry(true)
         }
     }
-    function InsertRecord() {
-        console.log("Get here 1")
-        const Email = email;
-        const Password = password;
-        const ConfirmPw = confirmPw;
-        const checkEmail = RegExp(/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i);
+    const insertRecord = async () => {
 
-        console.log("Get here 1")
+        return await axios.post('http://192.168.10.114/catusers/register.php',
+            { email: email, password: password }).then((responseJson) => {
+                // Showing response message coming from server after inserting records.
+               console.log(responseJson.data);
 
-        if ((Email.length === 0) || (Password.length === 0) || (ConfirmPw.length === 0)){
-            alert("Required Field Is Missing!!!");
-        }else if (!(checkEmail).test(Email)){
-            alert("invalid email!!!");
-        }
-        // Password validations
-        else if (Password.length<2){
-            alert("Minimum 08 characters required!!!");
-        }else if (!((/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/).test(Password))){
-            alert("Use at least 01 special character!!!");
-        }else if (((/ /).test(Password))){
-            alert("Don't include space in password!!!");
-        }else if(Password !== ConfirmPw){
-            alert("Password does not match!!!");
-        }
+            }).catch((error) => {
+            console.error(error);
+        });
 
-
-        else{
-            const InsertAPIURL = "http://10.0.2.2:80/SignIn/SignUp.php";   //API to render signup
-
-            const headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            };
-
-            const Data ={
-                Email: Email,
-                Password: Password
-            };
-
-            // FETCH func ------------------------------------
-            fetch(InsertAPIURL,{
-                method:'POST',
-                headers:headers,
-                body: JSON.stringify(Data) //convert data to JSON
-            })
-                .then((response)=>response.json()) //check response type of API (CHECK OUTPUT OF DATA IS IN JSON)
-                .then((response)=>{
-                    alert(response[0]);       // If data is in JSON => Display alert msg
-                    navigation.navigate("SignInScreen"); //Navigate to next screen if authentications are valid
-                })
-                .catch((error)=>{
-                    alert("Error Occured" + error);
-                })
-        }
     }
 
     return (
@@ -321,7 +278,7 @@ function Register({navigation}) {
                     secureTextEntry={secureTextEntry}
                 />
             </View>
-            <TouchableOpacity  style={theme.loginBtn} onPress={() => InsertRecord}>
+            <TouchableOpacity  style={theme.loginBtn} onPress={insertRecord}>
                 <Text style={theme.loginText}>Register</Text>
             </TouchableOpacity>
 
