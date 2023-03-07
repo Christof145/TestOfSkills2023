@@ -226,8 +226,7 @@ function Register({navigation}) {
         }
     }
     const insertRecord = async () => {
-
-        return await axios.post('http://192.168.10.114/catusers/register.php',
+        return await axios.post('user',
             { email: email, password: password }).then((responseJson) => {
                 // Showing response message coming from server after inserting records.
                console.log(responseJson.data);
@@ -235,6 +234,7 @@ function Register({navigation}) {
             }).catch((error) => {
             console.error(error);
         });
+
 
     }
 
